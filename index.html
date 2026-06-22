@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor Vetorial Fiber CNC - Autenticação</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        /* Paleta de cores extraída fielmente da imagem */
+        :root {
+            --bg-page: #f5f5f5;          /* Fundo cinza bem claro e suave */
+            --card-bg: #ffffff;          /* Box branco puro */
+            --accent-blue: #0093e9;      /* Azul vibrante dos botões e ícones */
+            --accent-hover: #007bc2;     /* Tom para o efeito hover */
+            --text-dark: #4a4a4a;        /* Cor das labels e textos principais */
+            --text-muted: #8c8c8c;       /* Cor dos placeholders e rodapé */
+            --border-color: #e0e0e0;     /* Borda cinza clara dos inputs */
+            --input-bg: #fafafa;         /* Fundo levemente cinza dos inputs */
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body { 
+            font-family: 'Segoe UI', Arial, sans-serif; 
+            background-color: var(--bg-page); 
+            display: flex; 
+            justify-content: center; 
+            align-items: center; 
+            height: 100vh; 
+            margin: 0; 
+        }
+
+        /* Container principal com sombra suave */
+        .login-box { 
+            background: var(--card-bg); 
+            padding: 45px 40px; 
+            border-radius: 12px; 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05); 
+            width: 100%; 
+            max-width: 440px; 
+            animation: fadeIn 0.4s ease-out;
+            text-align: center;
+        }
+
+        /* Área do Logo */
+        .brand-header {
+            margin-bottom: 35px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Ajuste de tamanho da logo oficial da Fiber CNC */
+        .brand-logo-img {
+            max-width: 220px;
+            height: auto;
+            display: block;
+        }
+
+        /* Estrutura de Formulário Empilhada (Vertical) */
+        .form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            text-align: left;
+        }
+
+        .input-group label {
+            display: block;
+            color: var(--text-dark);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+        }
+
+        .input-group label i {
+            color: var(--accent-blue);
+            margin-right: 4px;
+            font-size: 13px;
+        }
+
+        input { 
+            width: 100%; 
+            padding: 14px 16px; 
+            background: var(--input-bg);
+            border: 1px solid var(--border-color); 
+            border-radius: 8px; 
+            color: #333;
+            font-size: 15px;
+            transition: all 0.2s ease;
+        }
+
+        input::placeholder {
+            color: var(--text-muted);
+            opacity: 0.8;
+        }
+
+        /* Foco do input sutil */
+        input:focus {
+            outline: none;
+            border-color: var(--accent-blue);
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(0, 147, 233, 0.1);
+        }
+
+        /* Botão estilizado em formato pílula */
+        button { 
+            background: var(--accent-blue); 
+            color: white; 
+            border: none; 
+            padding: 15px; 
+            border-radius: 25px; 
+            cursor: pointer; 
+            font-weight: 600; 
+            font-size: 15px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            transition: background 0.2s ease, transform 0.1s ease;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        button:hover { 
+            background: var(--accent-hover); 
+        }
+
+        button:active {
+            transform: scale(0.99);
+        }
+
+        /* Mensagens de erro/validação */
+        #erro { 
+            color: #d32f2f; 
+            font-size: 13px; 
+            font-weight: 500;
+            text-align: center;
+            min-height: 1.4em;
+            margin-top: 5px;
+        }
+
+        /* Rodapé com linha divisória sutil */
+        .lockscreen-footer {
+            text-align: center;
+            margin-top: 35px;
+            font-size: 12px;
+            color: var(--text-muted);
+            border-top: 1px solid #f0f0f0;
+            padding-top: 20px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(8px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body>
+
+<div class="login-box" id="loginArea">
+    
+    <div class="brand-header">
+        <img src="https://fibercnc.com.br/wp-content/uploads/2025/01/Logo_-_Fiber_CNC-Lucas-Fiber-CNC-3.png" alt="Fiber CNC" class="brand-logo-img">
+    </div>
+
+    <div class="form-container">
+        <div class="input-group">
+            <label for="email"><i class="fas fa-envelope"></i> E-mail cadastrado</label>
+            <input id="email" type="email" placeholder="Digite seu e-mail">
+        </div>
+
+        <div class="input-group">
+            <label for="serial"><i class="fas fa-key"></i> Serial da Máquina</label>
+            <input id="serial" type="text" placeholder="Digite o serial da máquina">
+        </div>
+
+        <div id="erro"></div>
+
+        <button onclick="entrar()">
+            Autenticar Máquina <i class="fas fa-arrow-right"></i>
+        </button>
+    </div>
+    
+    <div class="lockscreen-footer">
+        <p>Fiber CNC - Todos os direitos reservados 2026</p>
+    </div>
+</div>
+
+<script>
+// Atalho para a tecla Enter
+document.addEventListener('keypress', function(e) {
+    if(e.key === 'Enter') {
+        entrar();
+    }
+});
+
+async function entrar() {
+    const email = document.getElementById("email").value.trim();
+    const serial = document.getElementById("serial").value.trim();
+    const erroDiv = document.getElementById("erro");
+    
+    if(!email || !serial) {
+        erroDiv.style.color = "#d32f2f";
+        erroDiv.innerText = "Por favor, preencha todos os campos.";
+        return;
+    }
+    
+    erroDiv.style.color = "var(--accent-blue)";
+    erroDiv.innerText = "Verificando chaves de segurança no servidor...";
+
+    const hardwareFingerprint = btoa(`${navigator.userAgent}-${screen.width}x${screen.height}-${navigator.hardwareConcurrency}`);
+    const url = `https://script.google.com/macros/s/AKfycbyMUi_wkBSUcSS_NfAq2AL7uM7GJBb9gfOdwGO1BApUciJCiYX0Sg9sFV-qaszKQP16/exec?serial=${encodeURIComponent(serial)}&email=${encodeURIComponent(email)}&device=${encodeURIComponent(hardwareFingerprint)}`;
+
+    try {
+        const res = await fetch(url);
+        const data = await res.json();
+
+        if (data.status === "sucesso") {
+            document.body.innerHTML = data.html;
+            const scripts = document.body.getElementsByTagName("script");
+            for (let i = 0; i < scripts.length; i++) {
+                eval(scripts[i].innerText);
+            }
+        } else {
+            erroDiv.style.color = "#d32f2f";
+            erroDiv.innerText = data.mensagem;
+        }
+    } catch (e) {
+        erroDiv.style.color = "#d32f2f";
+        erroDiv.innerText = "Falha na comunicação com o servidor de validação.";
+        console.error(e);
+    }
+}
+</script>
+
+</body>
+</html>
